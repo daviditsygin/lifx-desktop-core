@@ -1,0 +1,1 @@
+const Lifx = require('node-lifx-lan')
