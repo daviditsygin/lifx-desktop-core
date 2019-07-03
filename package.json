@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/daviditsygin/lifx-desktop-core#readme",
   "dependencies": {
+    "express": "^4.17.1",
     "node-ipc": "^9.1.1",
     "node-lifx-lan": "^0.3.1"
   },
