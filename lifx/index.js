@@ -7,7 +7,6 @@ class LifxController extends EventEmitter {
     this.options = { pollFrequency: pollFrequency }
     this.devices = []
     this.discover()
-    this.interval = setInterval(this.getStates, this.options.pollFrequency)
   }
 
   async discover() {

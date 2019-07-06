@@ -11,7 +11,7 @@ const lifxController = new lifx.LifxController({
 
 function stateHandler(req, res, next) {
   if (state !== 'READY') {
-    res.status(400)
+    res.status(500)
     res.send('Not ready')
     return
   }
@@ -20,7 +20,7 @@ function stateHandler(req, res, next) {
 
 app.use(stateHandler)
 
-app.get('/', (req, res) => res.send(lifxController.devices))
+app.get('/', (req, res) => res.send(lifxController.getStates()))
 app.get('/light/:name', (req, res) => res.send(lifxController.getLight(req.params.name)))
 app.get('/light/:name/toggle', (req, res) => res.send(lifxController.toggleLight(req.params.name)))
 app.listen(port, () => console.log(`Started express on port ${port}`))
