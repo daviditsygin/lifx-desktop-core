@@ -23,6 +23,9 @@ app.use(stateHandler)
 app.get('/', (req, res) => res.send(lifxController.getStates()))
 app.get('/light/:name', (req, res) => res.send(lifxController.getLight(req.params.name)))
 app.get('/light/:name/toggle', (req, res) => res.send(lifxController.toggleLight(req.params.name)))
+
+// TODO: groups
+
 app.listen(port, () => console.log(`Started express on port ${port}`))
 
 lifxController.on('ready', async () => {
