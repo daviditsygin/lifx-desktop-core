@@ -26,6 +26,8 @@ app.get('/light/:name/toggle', (req, res) => res.send(lifxController.toggleLight
 
 // TODO: groups
 
+//todo add groups
+
 app.listen(port, () => console.log(`Started express on port ${port}`))
 
 lifxController.on('ready', async () => {
