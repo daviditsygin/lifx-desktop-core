@@ -15,20 +15,22 @@ class LifxController extends EventEmitter {
     return this.devices
   }
 
-  async getStates() {
-    const promises = []
-    if (!this.devices) {
-      return null
-    }
-    this.devices.forEach((device) => {
-      promises.push(device.getLightState().then((lightState) => {
-        device.lightState = lightState
-      }))
+  getStates() {
+    return new Promise(async (res, rej) => {
+      if (!this.devices) {
+        return null
+      }
+      let max = this.devices.length
+      let i = 0
+      this.devices.forEach(async (device) => {
+        device.lightState = await device.getLightState()
+        i++
+        if (i == max) {
+          res(this.devices)
+        }
+      })
+
     })
-    await Promise.all(promises).then(() => {
-      console.log('promise finished')
-    })
-    return this.devices
   }
 
   getLight(name) {
@@ -41,11 +43,14 @@ class LifxController extends EventEmitter {
     return retdevice
   }
 
-  async toggleLight(name) {
-    const light = this.getLight(name)
-    light.lightState = await light.getLightState()
-    light.lightState.power === 1 ? light.turnOff() : light.turnOn()
-    return light
+  toggleLight(name) {
+    return new Promise(async (res, rej) => {
+      let light = this.getLight(name)
+      light.lightState = await light.getLightState()
+      light.lightState.power === 1 ? light.turnOff() : light.turnOn()
+      light.lightState = await light.getLightState()
+      res(light)
+    })
   }
 }
 
