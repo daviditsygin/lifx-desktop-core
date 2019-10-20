@@ -25,9 +25,7 @@ app.get('/light/:name', (req, res) => {
   try {
     let result = lifxController.getLight(req.params.name)
     res.send(result)
-  }
-  catch (err) {
-    console.log('caught error')
+  } catch (err) {
     res.status(400).send(err)
   }
 })
@@ -36,10 +34,24 @@ app.get('/light/:name/toggle', async (req, res) => {
     let result = await lifxController.toggleLight(req.params.name)
     res.send(result)
   } catch (err) {
-    console.log('caught error')
     res.status(400).send(err)
   }
-
+})
+app.get('/group/:name', (req, res) => {
+  try {
+    let result = lifxController.getGroup(req.params.name)
+    res.send(result)
+  } catch (err) {
+    res.status(400).send(err)
+  }
+})
+app.get('/group/:name/toggle', async (req, res) => {
+  try {
+    let result = await lifxController.toggleGroup(req.params.name)
+    res.send(result)
+  } catch (err) {
+    res.status(400).send(err)
+  }
 })
 
 // TODO: groups
