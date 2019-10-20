@@ -6,11 +6,15 @@ class LifxController extends EventEmitter {
     super()
     this.options = { pollFrequency: pollFrequency }
     this.devices = []
+    this.devicesByName = {}
     this.discover()
   }
 
   async discover() {
     this.devices = await Lifx.discover()
+    this.devices.forEach((device) => {
+      this.devicesByName[device.deviceInfo.label] = device
+    })
     this.emit('ready')
     return this.devices
   }
@@ -33,22 +37,23 @@ class LifxController extends EventEmitter {
   }
 
   getLight(name) {
-    let retdevice = null
-    this.devices.forEach((device) => {
-      if (device.deviceInfo.label === name) {
-        retdevice = device
-      }
-    })
-    return retdevice
+    if (this.devicesByName[name] === undefined){
+      throw new Error('Light not found')
+    }
+    return this.devicesByName[name]
   }
 
   toggleLight(name) {
     return new Promise(async (resolve, reject) => {
-      const light = this.getLight(name)
-      light.lightState = await light.getLightState()
-      light.lightState.power === 1 ? light.turnOff() : light.turnOn()
-      light.lightState = await light.getLightState()
-      resolve(light)
+      try {
+        const light = this.getLight(name)
+        light.lightState = await light.getLightState()
+        light.lightState.power === 1 ? light.turnOff() : light.turnOn()
+        light.lightState = await light.getLightState()
+        resolve(light)
+      } catch (err) {
+        reject(err)
+      }
     })
   }
 }
