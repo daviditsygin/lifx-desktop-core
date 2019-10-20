@@ -7,6 +7,7 @@ class LifxController extends EventEmitter {
     this.options = { pollFrequency: pollFrequency }
     this.devices = []
     this.devicesByName = {}
+    this.groups = {}
     this.discover()
   }
 
@@ -14,6 +15,13 @@ class LifxController extends EventEmitter {
     this.devices = await Lifx.discover()
     this.devices.forEach((device) => {
       this.devicesByName[device.deviceInfo.label] = device
+      if (device.deviceInfo.group && device.deviceInfo.group.label) {
+        const groupLabel = device.deviceInfo.group.label
+        if (this.groups[groupLabel] === undefined) {
+          this.groups[groupLabel] = []
+        }
+        this.groups[groupLabel].push(device.deviceInfo.label)
+      }
     })
     this.emit('ready')
     return this.devices
@@ -37,7 +45,7 @@ class LifxController extends EventEmitter {
   }
 
   getLight(name) {
-    if (this.devicesByName[name] === undefined){
+    if (this.devicesByName[name] === undefined) {
       throw new Error('Light not found')
     }
     return this.devicesByName[name]
@@ -56,6 +64,32 @@ class LifxController extends EventEmitter {
       }
     })
   }
+
+  getGroup(name) {
+    if (this.groups[name] === undefined) {
+      throw new Error('Group not found')
+    }
+    let arr = []
+    this.groups[name].forEach((deviceName) => {
+      arr.push(this.getLight(deviceName))
+    })
+    return arr
+  }
+
+  toggleGroup(name) {
+    return new Promise(async (resolve, reject) => {
+      if (this.groups[name] === undefined) {
+        throw new Error('Group not found')
+      }
+      let arr = []
+      this.groups[name].forEach((deviceName) => {
+        arr.push(this.toggleLight(deviceName))
+      })
+      let res = await Promise.all(arr)
+      resolve(res)
+    })
+  }
+
 }
 
 module.exports = {
