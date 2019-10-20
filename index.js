@@ -21,8 +21,26 @@ function stateHandler(req, res, next) {
 app.use(stateHandler)
 
 app.get('/', async (req, res) => res.send(await lifxController.getStates()))
-app.get('/light/:name', (req, res) => res.send(lifxController.getLight(req.params.name)))
-app.get('/light/:name/toggle', async (req, res) => res.send(await lifxController.toggleLight(req.params.name)))
+app.get('/light/:name', (req, res) => {
+  try {
+    let result = lifxController.getLight(req.params.name)
+    res.send(result)
+  }
+  catch (err) {
+    console.log('caught error')
+    res.status(400).send(err)
+  }
+})
+app.get('/light/:name/toggle', async (req, res) => {
+  try {
+    let result = await lifxController.toggleLight(req.params.name)
+    res.send(result)
+  } catch (err) {
+    console.log('caught error')
+    res.status(400).send(err)
+  }
+
+})
 
 // TODO: groups
 
