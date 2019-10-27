@@ -23,7 +23,7 @@ app.use(stateHandler)
 app.get('/', async (req, res) => res.send(await lifxController.getStates()))
 app.get('/light/:name', (req, res) => {
   try {
-    let result = lifxController.getLight(req.params.name)
+    const result = lifxController.getLight(req.params.name)
     res.send(result)
   } catch (err) {
     res.status(400).send(err)
@@ -31,7 +31,7 @@ app.get('/light/:name', (req, res) => {
 })
 app.get('/light/:name/toggle', async (req, res) => {
   try {
-    let result = await lifxController.toggleLight(req.params.name)
+    const result = await lifxController.toggleLight(req.params.name)
     res.send(result)
   } catch (err) {
     res.status(400).send(err)
@@ -39,7 +39,7 @@ app.get('/light/:name/toggle', async (req, res) => {
 })
 app.get('/group/:name', (req, res) => {
   try {
-    let result = lifxController.getGroup(req.params.name)
+    const result = lifxController.getGroup(req.params.name)
     res.send(result)
   } catch (err) {
     res.status(400).send(err)
@@ -47,7 +47,7 @@ app.get('/group/:name', (req, res) => {
 })
 app.get('/group/:name/toggle', async (req, res) => {
   try {
-    let result = await lifxController.toggleGroup(req.params.name)
+    const result = await lifxController.toggleGroup(req.params.name)
     res.send(result)
   } catch (err) {
     res.status(400).send(err)
