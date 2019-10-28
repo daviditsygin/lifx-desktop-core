@@ -69,7 +69,7 @@ class LifxController extends EventEmitter {
     if (this.groups[name] === undefined) {
       throw new Error('Group not found')
     }
-    let arr = []
+    const arr = []
     this.groups[name].forEach((deviceName) => {
       arr.push(this.getLight(deviceName))
     })
@@ -81,15 +81,14 @@ class LifxController extends EventEmitter {
       if (this.groups[name] === undefined) {
         throw new Error('Group not found')
       }
-      let arr = []
+      const arr = []
       this.groups[name].forEach((deviceName) => {
         arr.push(this.toggleLight(deviceName))
       })
-      let res = await Promise.all(arr)
+      const res = await Promise.all(arr)
       resolve(res)
     })
   }
-
 }
 
 module.exports = {
