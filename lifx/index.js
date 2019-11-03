@@ -1,3 +1,4 @@
+/* eslint-disable no-async-promise-executor */
 const EventEmitter = require('events')
 const Lifx = require('node-lifx-lan')
 
