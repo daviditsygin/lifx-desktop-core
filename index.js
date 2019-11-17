@@ -53,6 +53,19 @@ app.get('/light/:name/off', async (req, res) => {
     res.status(400).send(err)
   }
 })
+app.get('/light/:name/color/:color/:duration?', async (req, res) => {
+  try {
+    // duration is an optional URL param
+    if (req.params.color === 'random') {
+      req.params.color = Math.floor(Math.random() * 16777215).toString(16)
+    }
+    console.log(req.params.duration)
+    const result = await lifxController.setColor(req.params.name, req.params.color, req.params.duration)
+    res.send(result)
+  } catch (err) {
+    res.status(400).send(err)
+  }
+})
 app.get('/group/:name', (req, res) => {
   try {
     const result = lifxController.getGroup(req.params.name)

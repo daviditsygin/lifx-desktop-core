@@ -2,6 +2,8 @@
 const EventEmitter = require('events')
 const Lifx = require('node-lifx-lan')
 
+const CHANGE_DURATION = 500
+
 class LifxController extends EventEmitter {
   constructor({ pollFrequency }) {
     super()
@@ -84,6 +86,19 @@ class LifxController extends EventEmitter {
       try {
         const light = this.getLight(name)
         light.turnOff()
+        light.lightState = await light.getLightState()
+        resolve(light)
+      } catch (err) {
+        reject(err)
+      }
+    })
+  }
+
+  setColor(name, color, duration) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const light = this.getLight(name)
+        light.setColor({ color: { css: '#' + color }, duration: parseInt(duration) || CHANGE_DURATION })
         light.lightState = await light.getLightState()
         resolve(light)
       } catch (err) {
