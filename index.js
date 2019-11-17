@@ -1,7 +1,7 @@
-const lifx = require('./lifx')
+const lifx = require('./lifx/lifx')
 const express = require('express')
 const app = express()
-const port = 3000
+const port = 12962
 
 let state = 'NOT_READY'
 
@@ -32,6 +32,22 @@ app.get('/light/:name', (req, res) => {
 app.get('/light/:name/toggle', async (req, res) => {
   try {
     const result = await lifxController.toggleLight(req.params.name)
+    res.send(result)
+  } catch (err) {
+    res.status(400).send(err)
+  }
+})
+app.get('/light/:name/on', async (req, res) => {
+  try {
+    const result = await lifxController.lightOn(req.params.name)
+    res.send(result)
+  } catch (err) {
+    res.status(400).send(err)
+  }
+})
+app.get('/light/:name/off', async (req, res) => {
+  try {
+    const result = await lifxController.lightOff(req.params.name)
     res.send(result)
   } catch (err) {
     res.status(400).send(err)

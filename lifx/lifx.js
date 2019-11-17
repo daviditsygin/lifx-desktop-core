@@ -66,6 +66,32 @@ class LifxController extends EventEmitter {
     })
   }
 
+  lightOn(name) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const light = this.getLight(name)
+        light.turnOn()
+        light.lightState = await light.getLightState()
+        resolve(light)
+      } catch (err) {
+        reject(err)
+      }
+    })
+  }
+
+  lightOff(name) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const light = this.getLight(name)
+        light.turnOff()
+        light.lightState = await light.getLightState()
+        resolve(light)
+      } catch (err) {
+        reject(err)
+      }
+    })
+  }
+
   getGroup(name) {
     if (this.groups[name] === undefined) {
       throw new Error('Group not found')
