@@ -69,6 +69,22 @@ app.get('/group/:name/toggle', async (req, res) => {
     res.status(400).send(err)
   }
 })
+app.get('/group/:name/on', async (req, res) => {
+  try {
+    const result = await lifxController.groupOn(req.params.name)
+    res.send(result)
+  } catch (err) {
+    res.status(400).send(err)
+  }
+})
+app.get('/group/:name/off', async (req, res) => {
+  try {
+    const result = await lifxController.groupOff(req.params.name)
+    res.send(result)
+  } catch (err) {
+    res.status(400).send(err)
+  }
+})
 
 // TODO: groups
 
