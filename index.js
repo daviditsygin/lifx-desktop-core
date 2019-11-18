@@ -59,7 +59,6 @@ app.get('/light/:name/color/:color/:duration?', async (req, res) => {
     if (req.params.color === 'random') {
       req.params.color = Math.floor(Math.random() * 16777215).toString(16)
     }
-    console.log(req.params.duration)
     const result = await lifxController.setColor(req.params.name, req.params.color, req.params.duration)
     res.send(result)
   } catch (err) {
@@ -98,8 +97,18 @@ app.get('/group/:name/off', async (req, res) => {
     res.status(400).send(err)
   }
 })
-
-// TODO: groups
+app.get('/group/:name/color/:color/:duration?', async (req, res) => {
+  try {
+    // duration is an optional URL param
+    if (req.params.color === 'random') {
+      req.params.color = Math.floor(Math.random() * 16777215).toString(16)
+    }
+    const result = await lifxController.setGroupColor(req.params.name, req.params.color, req.params.duration)
+    res.send(result)
+  } catch (err) {
+    res.status(400).send(err)
+  }
+})
 
 app.listen(port, () => console.log(`Started express on port ${port}`))
 

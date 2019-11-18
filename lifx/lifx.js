@@ -159,6 +159,20 @@ class LifxController extends EventEmitter {
       resolve(res)
     })
   }
+
+  setGroupColor(name, color, duration) {
+    return new Promise(async (resolve, reject) => {
+      if (this.groups[name] === undefined) {
+        throw new Error('Group not found')
+      }
+      const arr = []
+      this.groups[name].forEach((deviceName) => {
+        arr.push(this.setColor(deviceName, color, duration))
+      })
+      const res = await Promise.all(arr)
+      resolve(res)
+    })
+  }
 }
 
 module.exports = {
