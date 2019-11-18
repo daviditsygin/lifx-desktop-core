@@ -8,7 +8,6 @@ let state = 'NOT_READY'
 const lifxController = new lifx.LifxController({
   pollTime: 3000
 })
-
 function stateHandler(req, res, next) {
   if (state !== 'READY') {
     res.status(500)
@@ -20,7 +19,7 @@ function stateHandler(req, res, next) {
 
 app.use(stateHandler)
 
-app.get('/', async (req, res) => res.send(await lifxController.getStates()))
+app.get('/lights/', async (req, res) => res.send(await lifxController.getStates()))
 app.get('/light/:name', (req, res) => {
   try {
     const result = lifxController.getLight(req.params.name)
