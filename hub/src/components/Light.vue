@@ -2,12 +2,12 @@
   <div class="w-1/4 px-3">
     <div
       :class="obj.lightState.power == 1 ? ['bg-gray-400', 'text-white'] : ['bg-gray-900', 'text-gray-500']"
-      class="rounded p-5"
+      class="rounded-lg p-5 shadow-md"
       :style="{ backgroundColor: `hsl(${color.h}, ${color.s}%, ${color.l}%)` }"
       style="transition: all 0.5s;"
       @click="toggleLight(obj)"
     >
-      <p>{{obj.deviceInfo.label}}</p>
+      <p class="font-bold">{{obj.deviceInfo.label}}</p>
       <p>{{obj.ip}}</p>
     </div>
   </div>
