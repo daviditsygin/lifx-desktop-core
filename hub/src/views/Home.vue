@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container mx-auto">
     <div class="px-3">
       <div v-for="(group, idx) in groups" :key="'group'+idx" class="mb-4">
         <h1 class="text-white text-4xl text-left">{{group.name}}</h1>
@@ -36,7 +36,7 @@ export default {
       for (let label in groups) {
         arr.push(groups[label]);
       }
-      console.log(groups);
+      // console.log(groups);
       return arr;
     }
   },
@@ -44,7 +44,8 @@ export default {
     return {
       lights: [],
       refreshRequest: null,
-      toggleRequest: null
+      toggleRequest: null,
+      interval: null
     };
   },
   methods: {
@@ -60,7 +61,7 @@ export default {
         contentType: "application/json"
       })
         .done(function(response) {
-          console.log(response);
+          // console.log(response);
           self.lights = response;
         })
         .fail(function(err) {
@@ -71,7 +72,7 @@ export default {
   },
   mounted: function() {
     this.refreshStates();
-    setInterval(this.refreshStates(), 2000);
+    this.interval = setInterval(this.refreshStates, 500);
   }
 };
 </script>

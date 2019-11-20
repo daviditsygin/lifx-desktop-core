@@ -1,14 +1,14 @@
 <template>
-  <div class="w-1/4 px-3">
+  <div class="w-1/4" :class="interacted ? 'px-6' : 'px-3'" style="transition: all 0.5s;">
     <div
-      :class="obj.lightState.power == 1 ? ['bg-gray-400', 'text-white'] : ['bg-gray-900', 'text-gray-500']"
-      class="rounded-lg p-5 shadow-md"
+      :class="[obj.lightState.power == 1 ? ['text-white'] : ['text-gray-500'], interacted ? 'py-4 mt-1 shadow' : 'py-5 shadow-md']"
+      class="rounded-lg cursor-pointer"
       :style="{ backgroundColor: `hsl(${color.h}, ${color.s}%, ${color.l}%)` }"
       style="transition: all 0.5s;"
       @click="toggleLight(obj)"
     >
       <p class="font-bold">{{obj.deviceInfo.label}}</p>
-      <p>{{obj.ip}}</p>
+      <p class="font-mono text-xs opacity-50">{{obj.ip}}</p>
     </div>
   </div>
 </template>
@@ -26,7 +26,7 @@ export default {
         return {
           h: parseInt(this.obj.lightState.color.hue * 360),
           s: parseInt(this.obj.lightState.color.saturation * 100),
-          l: parseInt(this.obj.lightState.color.brightness * 100)
+          l: parseInt(this.obj.lightState.color.brightness * 60)
         };
       } else {
         return {
@@ -37,15 +37,14 @@ export default {
       }
     }
   },
+  data() {
+    return {
+      interacted: false
+    };
+  },
   methods: {
     toggleLight(light) {
-      light.lightState.power == 1
-        ? (light.lightState.power = 0)
-        : (light.lightState.power = 1);
-      if (this.refreshRequest && this.toggleRequest) {
-        this.refreshRequest.abort();
-        this.toggleRequest.abort();
-      }
+      this.interact();
       this.toggleRequest = $.ajax({
         type: "GET",
         url: "/light/" + light.deviceInfo.label + "/toggle",
@@ -58,6 +57,15 @@ export default {
         .fail(function(err) {
           console.log(err.responseText);
         });
+    },
+    interact() {
+      let self = this;
+      console.log("interacted");
+      this.interacted = true;
+      setTimeout(function() {
+        self.interacted = false;
+        console.log("xd");
+      }, 300);
     }
   }
 };
