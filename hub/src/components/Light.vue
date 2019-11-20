@@ -1,5 +1,5 @@
 <template>
-  <div class="w-1/4" :class="interacted ? 'px-6' : 'px-3'" style="transition: all 0.5s;">
+  <div class="md:w-1/4 w-1/2 mb-6" :class="interacted ? 'px-6' : 'px-3'" style="transition: all 0.5s;">
     <div
       :class="[obj.lightState.power == 1 ? ['text-white'] : ['text-gray-500'], interacted ? 'py-4 mt-1 shadow' : 'py-5 shadow-md']"
       class="rounded-lg cursor-pointer"

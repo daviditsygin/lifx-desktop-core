@@ -4,7 +4,7 @@
       <div v-for="(group, idx) in groups" :key="'group'+idx" class="mb-4">
         <h1 class="text-white text-4xl text-left">{{group.name}}</h1>
         <!-- <hr class="mr-64"> -->
-        <div class="flex -mx-3 mt-3">
+        <div class="flex flex-wrap -mx-3 mt-3">
           <Light v-for="light in group.lights" :key="light.ip" :obj="light" />
         </div>
       </div>
