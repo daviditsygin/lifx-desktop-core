@@ -1,11 +1,11 @@
 <template>
   <div class="container mx-auto">
     <div class="px-3">
-      <div v-for="(group, idx) in groups" :key="'group'+idx" class="mb-4">
+      <div v-for="(group, idx) in groups" :key="'group'+idx" class="mb-4 rounded-lg bg-gray-900 p-5">
         <h1 class="text-white text-4xl text-left">{{group.name}}</h1>
         <!-- <hr class="mr-64"> -->
         <div class="flex flex-wrap -mx-3 mt-3">
-          <Light v-for="light in group.lights" :key="light.ip" :obj="light" />
+          <Light v-for="light in group.lights" :key="light.ip" :obj="light" @actionComplete="refreshStates" />
         </div>
       </div>
     </div>
@@ -45,7 +45,8 @@ export default {
       lights: [],
       refreshRequest: null,
       toggleRequest: null,
-      interval: null
+      interval: null,
+      refreshing: false
     };
   },
   methods: {
@@ -55,6 +56,10 @@ export default {
         this.refreshRequest.abort();
         this.toggleRequest.abort();
       }
+      if(self.refreshing){
+        return
+      }
+      self.refreshing = true
       this.refreshRequest = $.ajax({
         type: "GET",
         url: "/lights/",
@@ -63,16 +68,18 @@ export default {
         .done(function(response) {
           // console.log(response);
           self.lights = response;
+          self.refreshing = false
         })
         .fail(function(err) {
           console.log(err.responseText);
+          self.refreshing = false
           // alert(err.responseText);
         });
     }
   },
   mounted: function() {
     this.refreshStates();
-    this.interval = setInterval(this.refreshStates, 500);
+    this.interval = setInterval(this.refreshStates, 5000);
   }
 };
 </script>

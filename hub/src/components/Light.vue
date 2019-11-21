@@ -45,6 +45,7 @@ export default {
   methods: {
     toggleLight(light) {
       this.interact();
+      let self = this
       this.toggleRequest = $.ajax({
         type: "GET",
         url: "/light/" + light.deviceInfo.label + "/toggle",
@@ -53,6 +54,7 @@ export default {
         .done(function(response) {
           console.log(response);
           // emit to refreshstates
+          self.$emit('actionComplete')
         })
         .fail(function(err) {
           console.log(err.responseText);
