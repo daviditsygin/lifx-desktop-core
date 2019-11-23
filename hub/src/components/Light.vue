@@ -1,25 +1,37 @@
 <template>
-  <div class="md:w-1/4 w-1/2 mb-6" :class="interacted ? 'px-6' : 'px-3'" style="transition: all 0.5s;">
-    <div
+  <div
+    class="md:w-1/4 w-1/2 mb-6"
+    :class="interacted ? 'px-6' : 'px-3'"
+    style="transition: all 0.5s;"
+  >
+    <div v-if="view == 'Main'"
       :class="[obj.lightState.power == 1 ? ['text-white'] : ['text-gray-500'], interacted ? 'py-4 mt-1 shadow' : 'py-5 shadow-md']"
       class="rounded-lg cursor-pointer"
       :style="{ backgroundColor: `hsl(${color.h}, ${color.s}%, ${color.l}%)` }"
       style="transition: all 0.5s;"
       @click="toggleLight(obj)"
     >
-      <p class="font-bold">{{obj.deviceInfo.label}}</p>
+      <p class="font-bold" >{{obj.deviceInfo.label}}</p>
       <p class="font-mono text-xs opacity-50">{{obj.ip}}</p>
+      <div class="relative bg-gray-600">
+        <div class="absolute mr-2 mb-2 float-right" style="bottom: -25px; right: 5px;" @click.stop="view = 'Color'" @close="changeView('Color')">...</div>
+      </div>
+    </div>
+    <div v-else-if="view == 'Color'">
+      <ColorPanel :lightState="obj.lightState" @close="changeView('Main')" />
     </div>
   </div>
 </template>
 
 <script>
 import $ from "jquery";
+import ColorPanel from "@/components/ColorPanel.vue";
 export default {
   name: "Light",
   props: {
     obj: Object
   },
+  components: { ColorPanel },
   computed: {
     color() {
       if (this.obj.lightState.power == 1) {
@@ -39,13 +51,14 @@ export default {
   },
   data() {
     return {
-      interacted: false
+      interacted: false,
+      view: 'Main'
     };
   },
   methods: {
     toggleLight(light) {
       this.interact();
-      let self = this
+      let self = this;
       this.toggleRequest = $.ajax({
         type: "GET",
         url: "/light/" + light.deviceInfo.label + "/toggle",
@@ -54,11 +67,15 @@ export default {
         .done(function(response) {
           console.log(response);
           // emit to refreshstates
-          self.$emit('actionComplete')
+          self.$emit("actionComplete");
         })
         .fail(function(err) {
           console.log(err.responseText);
         });
+    },
+    changeView(view){
+      // this.interact()
+      this.view = view
     },
     interact() {
       let self = this;
