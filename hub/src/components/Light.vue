@@ -1,8 +1,8 @@
 <template>
   <div
-    class="md:w-1/4 w-1/2 mb-6"
+    class="md:w-1/4 w-1/2"
     :class="interacted ? 'px-6' : 'px-3'"
-    style="transition: all 0.5s;"
+    style="transition: all 0.2s;"
   >
     <div v-if="view == 'Main'"
       :class="[obj.lightState.power == 1 ? ['text-white'] : ['text-gray-500'], interacted ? 'py-4 mt-1 shadow' : 'py-5 shadow-md']"
@@ -17,7 +17,10 @@
         <div class="absolute mr-2 mb-2 float-right" style="bottom: -25px; right: 5px;" @click.stop="view = 'Color'" @close="changeView('Color')">...</div>
       </div>
     </div>
-    <div v-else-if="view == 'Color'">
+    <div v-else-if="view == 'Color'"
+          :class="[obj.lightState.power == 1 ? ['text-white'] : ['text-gray-500'], interacted ? 'py-4 mt-1 shadow' : 'py-5 shadow-md']"
+      class="rounded-lg cursor-pointer"
+    >
       <ColorPanel :lightState="obj.lightState" @close="changeView('Main')" />
     </div>
   </div>
@@ -38,7 +41,7 @@ export default {
         return {
           h: parseInt(this.obj.lightState.color.hue * 360),
           s: parseInt(this.obj.lightState.color.saturation * 100),
-          l: parseInt(this.obj.lightState.color.brightness * 60)
+          l: 20 + parseInt(this.obj.lightState.color.brightness * 40)
         };
       } else {
         return {
@@ -84,7 +87,7 @@ export default {
       setTimeout(function() {
         self.interacted = false;
         console.log("xd");
-      }, 300);
+      }, 200);
     }
   }
 };

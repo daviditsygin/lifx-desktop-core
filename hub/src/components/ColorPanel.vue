@@ -1,5 +1,5 @@
 <template>
-  <div class="md:w-1/4 w-1/2 mb-6" :class="interacted ? 'px-6' : 'px-3'" style="transition: all 0.5s;">
+  <div style="transition: all 0.5s;">
     ColorPanel
     <p @click="close">Close</p>
   </div>
