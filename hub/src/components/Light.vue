@@ -18,8 +18,10 @@
       </div>
     </div>
     <div v-else-if="view == 'Color'"
-          :class="[obj.lightState.power == 1 ? ['text-white'] : ['text-gray-500'], interacted ? 'py-4 mt-1 shadow' : 'py-5 shadow-md']"
+      :class="[obj.lightState.power == 1 ? ['text-white'] : ['text-gray-500'], interacted ? 'py-4 mt-1 shadow' : 'py-5 shadow-md']"
       class="rounded-lg cursor-pointer"
+      :style="{ backgroundColor: `hsl(${color.h}, ${color.s}%, ${color.l}%)` }"
+      style="transition: all 0.5s;"
     >
       <ColorPanel :lightState="obj.lightState" @close="changeView('Main')" />
     </div>

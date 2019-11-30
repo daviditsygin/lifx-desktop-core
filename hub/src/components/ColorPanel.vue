@@ -1,7 +1,14 @@
 <template>
-  <div style="transition: all 0.5s;">
-    ColorPanel
-    <p @click="close">Close</p>
+  <div
+    style="transition: all 0.5s;"
+    :style="{ backgroundColor: `hsl(${color.h}, ${color.s}%, ${color.l}%)` }"
+  >
+    <img
+      src="../assets/hueslider.svg"
+      style="height: 24px; width: 100%; transform: scalex(1.36) translateY(-10px);"
+      :style="{ filter: `brightness(${brightness}) saturate(${saturation})` }"
+    />
+    <p class="font-mono text-xs opacity-50" @click="close">Close</p>
   </div>
 </template>
 
@@ -17,7 +24,7 @@ export default {
         return {
           h: parseInt(this.lightState.color.hue * 360),
           s: parseInt(this.lightState.color.saturation * 100),
-          l: parseInt(this.lightState.color.brightness * 60)
+          l: 20 + parseInt(this.lightState.color.brightness * 40)
         };
       } else {
         return {
@@ -26,6 +33,12 @@ export default {
           l: 17
         };
       }
+    },
+    brightness() {
+      return 2*((20 + parseInt(this.lightState.color.brightness * 40))/100);
+    },
+    saturation() {
+      return this.lightState.color.saturation;
     }
   },
   data() {
@@ -37,8 +50,8 @@ export default {
     toggleLight() {
       // color slide should emit to the light so it talks back to the api
     },
-    close(){
-      this.$emit('close')
+    close() {
+      this.$emit("close");
     },
     interact() {
       let self = this;
