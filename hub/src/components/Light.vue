@@ -2,28 +2,29 @@
   <div
     class="md:w-1/4 w-1/2"
     :class="interacted ? 'px-6' : 'px-3'"
-    style="transition: all 0.2s;"
+    style="transition: all 0.2s; margin-bottom: 20px;"
   >
-    <div v-if="view == 'Main'"
+    <div
       :class="[obj.lightState.power == 1 ? ['text-white'] : ['text-gray-500'], interacted ? 'py-4 mt-1 shadow' : 'py-5 shadow-md']"
       class="rounded-lg cursor-pointer"
       :style="{ backgroundColor: `hsl(${color.h}, ${color.s}%, ${color.l}%)` }"
       style="transition: all 0.5s;"
-      @click="toggleLight(obj)"
     >
-      <p class="font-bold" >{{obj.deviceInfo.label}}</p>
-      <p class="font-mono text-xs opacity-50">{{obj.ip}}</p>
-      <div class="relative bg-gray-600">
-        <div class="absolute mr-2 mb-2 float-right" style="bottom: -25px; right: 5px;" @click.stop="view = 'Color'" @close="changeView('Color')">...</div>
+      <div v-if="view == 'Main'" @click="toggleLight(obj)">
+        <p class="font-bold">{{obj.deviceInfo.label}}</p>
+        <p class="font-mono text-xs opacity-50">{{obj.ip}}</p>
+        <div class="relative bg-gray-600">
+          <div
+            class="absolute mr-2 mb-2 float-right"
+            style="bottom: -25px; right: 5px;"
+            @click.stop="view = 'Color'"
+            @close="changeView('Color')"
+          >...</div>
+        </div>
       </div>
-    </div>
-    <div v-else-if="view == 'Color'"
-      :class="[obj.lightState.power == 1 ? ['text-white'] : ['text-gray-500'], interacted ? 'py-4 mt-1 shadow' : 'py-5 shadow-md']"
-      class="rounded-lg cursor-pointer"
-      :style="{ backgroundColor: `hsl(${color.h}, ${color.s}%, ${color.l}%)` }"
-      style="transition: all 0.5s;"
-    >
-      <ColorPanel :lightState="obj.lightState" @close="changeView('Main')" />
+      <div v-else-if="view == 'Color'">
+        <ColorPanel :lightState="obj.lightState" @close="changeView('Main')" />
+      </div>
     </div>
   </div>
 </template>
@@ -57,7 +58,7 @@ export default {
   data() {
     return {
       interacted: false,
-      view: 'Main'
+      view: "Main"
     };
   },
   methods: {
@@ -78,9 +79,9 @@ export default {
           console.log(err.responseText);
         });
     },
-    changeView(view){
+    changeView(view) {
       // this.interact()
-      this.view = view
+      this.view = view;
     },
     interact() {
       let self = this;
