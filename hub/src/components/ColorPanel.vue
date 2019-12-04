@@ -3,20 +3,20 @@
     style="transition: all 0.5s;"
     :style="{ backgroundColor: `hsl(${color.h}, ${color.s}%, ${color.l}%)` }"
   >
-    <img
-      src="../assets/hueslider.svg"
-      style="height: 24px; width: 100%; transform: scalex(1.36) translateY(-10px);"
-      :style="{ filter: `brightness(${brightness}) saturate(${saturation})` }"
-    />
+    <photoshop-picker v-model="colors" />
     <p class="font-mono text-xs opacity-50" @click="close">Close</p>
   </div>
 </template>
 
 <script>
+import { Slider } from 'vue-color'
 export default {
   name: "ColorPanel",
   props: {
     lightState: Object
+  },
+  components: {
+    'photoshop-picker': Slider
   },
   computed: {
     color() {
@@ -43,7 +43,8 @@ export default {
   },
   data() {
     return {
-      interacted: false
+      interacted: false,
+      colors: { h: this.lightState.color.hue, s: this.lightState.color.saturation, l: this.lightState.color.brightness }
     };
   },
   methods: {
@@ -81,5 +82,13 @@ li {
 }
 a {
   color: #42b983;
+}
+.vc-slider-swatches {
+    display: flex;
+    margin-top: 10px !important;
+}
+.vc-slider {
+    position: relative;
+    width: 100%;
 }
 </style>
